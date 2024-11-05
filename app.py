@@ -1,18 +1,10 @@
-from flask import Flask, render_template
+import http.server
+import socketserver
 
-# Initialize the Flask app
-app = Flask(__name__)
+PORT = 8000
 
-# Define the homepage route
-@app.route('/')
-def home():
-    return "Hello, Flask!"
+Handler = http.server.SimpleHTTPRequestHandler
 
-# Another route for a greeting page
-@app.route('/greet/<name>')
-def greet(name):
-    return f"Hello, {name}! Welcome to the Flask app."
-
-# Running the Flask app
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+with socketserver.TCPServer(("", PORT), Handler) as httpd:
+    print("serving at port", PORT)
+    httpd.serve_forever()
